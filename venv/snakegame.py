@@ -1,3 +1,5 @@
+import random
+
 class Snake:
     def __init__(self, init_body, init_direction):
         self.body = init_body
@@ -26,6 +28,11 @@ class Apple:
     def __init__(self):
         self
 
+    def generate_apple(self,height,width):
+        apple_x = random.randint(0, width)
+        apple_y = random.randint(0, height)
+        return (apple_y,apple_x)
+
 class Game:
     UP = (-1,0)
     DOWN = (1,0)
@@ -36,6 +43,13 @@ class Game:
         self.height = height
         self.width = width
         self.snake = Snake([(0, 0), (1, 0), (2, 0), (3, 0)], self.UP)
+        self.apple = self.check_apple(height,width,self.snake)
+
+    def check_apple(self,height,width,snake):
+        while True:
+            apple = Apple.generate_apple(self,height,width)
+            if apple not in snake.body:
+                 return apple
 
     def check_collision(self,snake):
         head = snake.head()
@@ -57,7 +71,7 @@ class Game:
                 board[i].append(None)
         return board
 
-    def insert_snake(self,head,body,grid,height):
+    def insert_into(self,head,body,grid,height,apple):
         if head[0] == height:
             grid[head[1]] = 'X'
 
@@ -65,15 +79,20 @@ class Game:
             if b[0] == height:
                 grid[b[1]] = 'O'
 
+        if apple[0] == height:
+            grid[apple[1]] = '*'
+
+
         return grid
 
     def render(self):
         matrix = self.create_empty()
         print('+'+ '--'*len(matrix[0]) + '+')
         *body,head = self.snake.body
+        apple = self.apple
         for height,i in enumerate(matrix) :
             grid = [x if x else ' ' for x in i]
-            self.insert_snake(head,body,grid,height)
+            self.insert_into(head,body,grid,height,apple)
             print('| ' + ' '.join(grid) + '|')
         print('+'+'--'*len(matrix[0])+'+')
 
