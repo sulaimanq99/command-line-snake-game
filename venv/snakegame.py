@@ -1,5 +1,6 @@
 import random
 
+
 class Snake:
     def __init__(self, init_body, init_direction):
         self.body = init_body
@@ -138,8 +139,6 @@ class Game:
 
 
 if __name__ == '__main__':
-    test = Game(10,10)
+    test = Game(10,20)
     test.render()
     test.game_loop(test.snake,test.apple)
-    #print(test.snake.body)
-    #test.render()
