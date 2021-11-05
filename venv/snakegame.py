@@ -29,8 +29,8 @@ class Apple:
         self
 
     def generate_apple(self,height,width):
-        apple_x = random.randint(0, width)
-        apple_y = random.randint(0, height)
+        apple_x = random.randint(0, width-1)
+        apple_y = random.randint(0, height-1)
         return (apple_y,apple_x)
 
 class Game:
@@ -61,6 +61,14 @@ class Game:
         elif head_x > rightbound or head_x <0: return False
         if head in snake.body[:-1]: return False
         else: return  True
+
+    def check_apple_collision(self,snake,apple):
+        head = snake.head()
+        head_y, head_x = head
+        apple_y, apple_x = apple
+        if head_y == apple_y and head_x == apple_x:
+            return True
+
 
 
     def create_empty(self):
@@ -96,7 +104,8 @@ class Game:
             print('| ' + ' '.join(grid) + '|')
         print('+'+'--'*len(matrix[0])+'+')
 
-    def game_loop(self,snake):
+    def game_loop(self,snake,apple):
+        score = 0
         while True:
             move = self.move_dic[input('enter direction ').upper()]
             dir = snake.set_direction(move)
@@ -104,12 +113,16 @@ class Game:
             snake.takestep(nex_p)
             if not self.check_collision(snake):
                 return
+            if self.check_apple_collision(snake,self.apple):
+                self.apple = self.check_apple(self.height,self.width,snake)
+                score +=1
+            print(f'{score}')
             self.render()
 
 
 if __name__ == '__main__':
     test = Game(10,10)
     test.render()
-    test.game_loop(test.snake)
+    test.game_loop(test.snake,test.apple)
     #print(test.snake.body)
     #test.render()
