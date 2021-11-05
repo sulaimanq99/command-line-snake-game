@@ -23,7 +23,6 @@ class Snake:
     def head(self):
         return self.body[-1]
 
-
 class Apple:
     def __init__(self):
         self
@@ -62,8 +61,6 @@ class Game:
                 break
         snake.body.insert(0,n)
 
-
-
     def new_segment_in_bounds(self,segment):
         upperbound = self.height - 1
         rightbound = self.width - 1
@@ -73,20 +70,7 @@ class Game:
         elif segmentx>rightbound or segmentx< 0:
             return False
         return True
-
-
-        '''
-        if direction == self.UP:
-            new_segment = (last_segment[0]+1,last_segment[1])
-        elif direction == self.DOWN:
-            new_segment = (last_segment[0]-1,last_segment[1])
-        elif direction == self.RIGHT:
-            new_segment = (last_segment[0],last_segment[1]-1)
-        elif direction == self.LEFT:
-            new_segment = (last_segment[0],last_segment[1]+1)'''
-
         snake.body.insert(0,new_segment)
-
 
     def check_collision(self,snake):
         head = snake.head()
@@ -94,10 +78,10 @@ class Game:
         head_x = head[1]
         upperbound = self.height-1
         rightbound = self.width-1
-        if head_y > upperbound or head_y < 0: return False
-        elif head_x > rightbound or head_x <0: return False
-        if head in snake.body[:-1]: return False
-        else: return  True
+        if head_y > upperbound or head_y < 0: return True
+        elif head_x > rightbound or head_x <0: return True
+        if head in snake.body[:-1]: return True
+        else: return  False
 
     def check_apple_collision(self,snake,apple):
         head = snake.head()
@@ -142,7 +126,8 @@ class Game:
             dir = snake.set_direction(move)
             nex_p = snake.next_pos(dir)
             snake.takestep(nex_p)
-            if not self.check_collision(snake):
+            if self.check_collision(snake):
+                print(f'Game over, final score: {score} points')
                 return
             if self.check_apple_collision(snake,self.apple):
                 self.apple = self.check_apple(self.height,self.width,snake)
