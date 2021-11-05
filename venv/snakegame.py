@@ -45,7 +45,7 @@ class Game:
         rightbound = self.width-1
         if head_y > upperbound or head_y < 0: return False
         elif head_x > rightbound or head_x <0: return False
-        elif head in snake.body[:-1]: return False
+        if head in snake.body[:-1]: return False
         else: return  True
 
 
