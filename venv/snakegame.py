@@ -55,11 +55,24 @@ class Game:
         last_segment = snake.body[0]
         second_last_segment = snake.body[1]
         direction = snake.direction
-        next_segment = (last_segment[0] , last_segment[1])
-        while next_segment in snake.body and next_segment
-        #TODO: create new function that checks if new segment in and out of bounds
-        #TODO: two loops in while, first two increase y, then to increase x
+        lasty,lastx = last_segment
+        next_segments = [(lasty+1,lastx),(lasty-1,lastx),(lasty,lastx+1),(lasty,lastx-1)]
+        for n in next_segments:
+            if n not in snake.body and self.new_segment_in_bounds(n) and n!= self.apple:
+                break
+        snake.body.insert(0,n)
 
+
+
+    def new_segment_in_bounds(self,segment):
+        upperbound = self.height - 1
+        rightbound = self.width - 1
+        segmenty,segmentx = segment
+        if segmenty > upperbound or segmenty <0:
+            return False
+        elif segmentx>rightbound or segmentx< 0:
+            return False
+        return True
 
 
         '''
